@@ -1,0 +1,158 @@
+<div class="container-fluid"
+     style="padding-left: 3%;
+            padding-right: 3%;">
+  <div class="row">
+    <div class="col-sm-offset-2 col-sm-8">
+      <h2>
+        {{formTitle}}
+      </h2>
+    </div>
+    <div class="col-sm-2"
+         style="text-align: right">
+      <button type="button" class="btn btn-default"
+              style="outline: 0"
+              (click)="goBack()">
+        Go back
+      </button>
+    </div>
+  </div>
+  <br>
+  <form [formGroup]="chartForm"
+        style="border: 3px solid #d1b394;
+               border-radius: 48px;
+               margin-bottom: 2%;
+               padding: 2% 4%;">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4">
+          <label class="app-input-box-label">
+            Chart type:
+          </label>
+        </div>
+        <div class="col-sm-8">
+          <div class="btn-group"
+               style="height: 30px;
+                      width: 100%">
+            <button type="button" class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false"
+                    style="border-radius: 8px;
+                         height: 30px;
+                         width: 100%">
+              {{chartForm.controls['type'].value ?
+                  chartForm.controls['type'].value :
+                  'select'}}&nbsp;
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu"
+                style="text-align: center;
+                     width: 100%">
+              <li *ngFor="let label of chartTypeLabels; let index = index"
+                  (click)="onChartTypeSelected(index)">
+                <a>
+                  {{label}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <app-input-box [label]="'Title:'"
+                       [inFormControl]="chartForm.controls['title']">
+        </app-input-box>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-xs-6">
+          <span [ngClass]="collapseCollectionForms ?
+                            'glyphicon glyphicon-chevron-right' :
+                            'glyphicon glyphicon-chevron-down'"
+                (click)="collapseCollectionForms = !collapseCollectionForms"
+                style="vertical-align: middle">
+          </span>
+          <label class="app-input-box-label"
+                 style="padding-left: 7px;
+                        text-decoration: underline">
+            Collections:
+          </label>
+        </div>
+        <div class="col-xs-6"
+             style="text-align: right">
+          <button type="button" class="btn btn-default"
+                  style="border-radius: 16px;
+                         outline: 0"
+                  (click)="onCollectionAdd()">
+            New {{collectionsLabel}}
+          </button>
+        </div>
+      </div>
+      <br>
+      <div [hidden]="collapseCollectionForms">
+        <div style="padding-left: 20px;">
+          <div *ngFor="let collectionInput of collectionInputs"
+               style="border: 2px solid #d1b394;
+                      border-radius: 48px;
+                      margin-bottom: 15px;
+                      padding: 15px 15px;">
+            <app-collection-form [currentCollection]=
+                                                "collectionInput.collectionObject"
+                                 [currentPosition]="collectionInput.position"
+                                 [formGroup]="collectionInput.form">
+            </app-collection-form>
+            <div style="text-align: right">
+              <button *ngIf="collectionInputs.length > 1"
+                      type="button" class="btn btn-default"
+                      style="border-radius: 16px;
+                             outline: 0;"
+                      (click)="onCollectionRemove(collectionInput.position,
+                                                  collectionInput.label)">
+                Remove {{collectionsLabel}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div>
+    <button *ngIf="!previewMode"
+            type="button" class="btn btn-default"
+            (click)="onPreviewToggleOn()"
+            style="outline: 0"
+            [disabled]="!(obChartFormValid | async)">
+      Preview chart
+    </button>
+    <div class="row">
+      <div class="col-xs-3">
+        <button *ngIf="previewMode"
+                type="button" class="btn btn-default"
+                style="margin-top: 15px;
+                       outline: 0"
+                (click)="onUpdatePreview()"
+                [disabled]="!(obChartFormValid | async)">
+          Update chart preview
+        </button>
+      </div>
+      <div class="col-xs-3 col-xs-offset-6"
+           style="text-align: right">
+        <button *ngIf="previewMode"
+                type="button" class="btn btn-default"
+                (click)="onPreviewToggleOff()"
+                style="margin-top: 15px;
+                          outline: 0">
+          Turn off chart preview
+        </button>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div *ngIf="previewMode">
+    <app-show-chart [chart]="currentChart"
+                    [obUpdateFlag]="obUpdateChartPreview">
+    </app-show-chart>
+  </div>
+</div>

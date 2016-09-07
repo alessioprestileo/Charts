@@ -30,6 +30,11 @@ module.exports = function(defaults) {
       'lodash/**/*.+(js|js.map)',
       'ng2-charts/ng2-charts.js',
       'ng2-charts/components/charts/charts.js',
+      'slick-carousel/slick/ajax-loader.gif',
+      'slick-carousel/slick/slick.min.js',
+      'slick-carousel/slick/slick.css',
+      'slick-carousel/slick/slick-theme.css',
+      'slick-carousel/slick/fonts/slick.woff',
       'typeahead.js/dist/typeahead.bundle.min.js'
     ]
   });

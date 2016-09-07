@@ -1,4 +1,4 @@
-export class ChartsPage {
+export class AlepWebsitePage {
   navigateTo() {
     return browser.get('/');
   }

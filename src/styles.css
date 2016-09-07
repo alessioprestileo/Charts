@@ -1,13 +1,12 @@
 .background {
-  background-color: white;
+  background-color: #b8cbe0;
 }
 .app-input-box-label {
   font-size: 20px;
   font-weight: normal;
-  height: 30px;
+  min-height: 30px;
   margin-bottom: 0px;
   vertical-align: middle;
-  width: 15%;
 }
 body {
   margin: 2em;

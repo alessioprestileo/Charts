@@ -1,10 +1,10 @@
-import { ChartsPage } from './app.po';
+import { AlepWebsitePage } from './app.po';
 
-describe('charts App', function() {
-  let page: ChartsPage;
+describe('alep-website App', function() {
+  let page: AlepWebsitePage;
 
   beforeEach(() => {
-    page = new ChartsPage();
+    page = new AlepWebsitePage();
   });
 
   it('should display message saying app works', () => {
