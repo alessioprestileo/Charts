@@ -111,13 +111,14 @@ export class AppComponent implements AfterViewChecked, DoCheck,
     let navSections: NavButton[];
     let sectionsPerRow: number;
     navSections = [
+      new NavButton('Dashboard', ['/' + this.ROUTES_DICT.DASHBOARD]),
       new NavButton('Samples', ['/' + this.ROUTES_DICT.SAMPLES]),
       new NavButton('New Chart', ['/' + this.ROUTES_DICT.NEW_CHART]),
       new NavButton('Lab', ['/' + this.ROUTES_DICT.LAB])
     ];
     columnsPerSec = 2;
     navLevel = 1;
-    sectionsPerRow = 3;
+    sectionsPerRow = 4;
     this.navInput = [navLevel, navSections, columnsPerSec, sectionsPerRow];
   }
   private setSiteMapInput(currentUrl: string) : void {

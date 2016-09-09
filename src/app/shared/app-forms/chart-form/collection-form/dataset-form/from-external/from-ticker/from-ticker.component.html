@@ -2,24 +2,24 @@
      style="padding-left: 0;
             padding-right: 0">
   <div class="row">
-    <app-search-box
+    <app-search-box *ngIf="dataSetBloodhoundSources.Ticker.defaultSource"
       [formControlKey]="'dataSet-Ticker'"
       [inFormGroup]="inFormGroup"
-      [method]="'prefetch'"
-      [source]="dataSetSearchSources.Ticker.prefetch"
+      [method]="'local'"
+      [source]="dataSetBloodhoundSources.Ticker.defaultSource"
       [targetProperty]="'Ticker'"
       (hasNotSuccessEmitter)="onSearchBoxNotSuccess($event)"
       (hasSuccessEmitter)="onSearchBoxSuccess($event)">
     </app-search-box>
   </div>
   <div *ngIf="currentDataSet.Ticker &&
-                          dataSetSearchSources.Field.local">
+                          dataSetBloodhoundSources.Field.filteredSource">
     <div class="row">
       <app-search-box
         [formControlKey]="'dataSet-Field'"
         [inFormGroup]="inFormGroup"
         [method]="'local'"
-        [source]="dataSetSearchSources.Field.local"
+        [source]="dataSetBloodhoundSources.Field.filteredSource"
         [targetProperty]="'Field'"
         (hasNotSuccessEmitter)="onSearchBoxNotSuccess($event)"
         (hasSuccessEmitter)="onSearchBoxSuccess($event)">

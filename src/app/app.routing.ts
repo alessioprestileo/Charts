@@ -2,12 +2,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import * as ROUTING_LABELS from './app.routing-labels'
 
+import { DashboardComponent } from './routes/dashboard/dashboard.component';
 import { LabComponent } from './routes/lab/lab.component';
 import { NewChartComponent } from './routes/new-chart/new-chart.component';
 import { SamplesComponent } from './routes/samples/samples.component';
 
 export const ROUTES_DICT: {[name: string] : string} = {
   CHARTS: ROUTING_LABELS.CHARTS,
+  DASHBOARD: ROUTING_LABELS.DASHBOARD,
   HOME: ROUTING_LABELS.HOME,
   LAB: ROUTING_LABELS.LAB,
   MY_CV: ROUTING_LABELS.MY_CV,
@@ -21,8 +23,12 @@ export const ROUTES_DICT: {[name: string] : string} = {
 export const APP_ROUTES: Routes = [
   {
     path: '',
-    redirectTo: ROUTING_LABELS.SAMPLES,
+    redirectTo: ROUTING_LABELS.DASHBOARD,
     pathMatch: 'full',
+  },
+  {
+    path: ROUTING_LABELS.DASHBOARD,
+    component: DashboardComponent,
   },
   {
     path: ROUTING_LABELS.LAB,

@@ -72,7 +72,6 @@ export class SearchBoxComponent implements OnDestroy, OnInit {
       () : void => this.inFormGroup.updateValueAndValidity()
     );
   }
-
   private buildSuggestions() {
     let switcher: string = this.method;
     switch (switcher) {
@@ -94,7 +93,7 @@ export class SearchBoxComponent implements OnDestroy, OnInit {
             {
               name: 'suggestions',
               limit: 100,
-              source: this.suggestionsEngine
+              source: this.suggestionsEngine.ttAdapter()
             }
           );
         this.suggestions.on(
@@ -112,7 +111,12 @@ export class SearchBoxComponent implements OnDestroy, OnInit {
             this.targetProperty
           ),
           queryTokenizer: Bloodhound.tokenizers.whitespace,
-          prefetch: {url: this.source}
+          prefetch: {
+            // 'ttl' is the time (in milliseconds) the pre-fetched data should
+            // be cached in local storage. Defaults to 86400000 (1 day).
+            ttl: 300000,
+            url: this.source
+          }
         });
         // constructs the suggestions
         this.suggestions = jQuery(this.searchBox.nativeElement).find(
@@ -191,7 +195,7 @@ export class SearchBoxComponent implements OnDestroy, OnInit {
     this.inFormGroup.removeControl(this.formControlKey);
     this.inFormGroup.removeControl(this.formControlKey + '-typeahead');
 
-}
+  }
   private typeaheadValidator(
     control: FormControl
   ) : {[errorProp: string]: boolean} {
