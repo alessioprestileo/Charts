@@ -21,7 +21,6 @@ export class CollectionFormComponent implements DoCheck, OnDestroy, OnInit {
   @Input() private currentCollection: AppChartCollection;
   @Input() private formGroup: FormGroup;
 
-  // private collapseDataSetForm: boolean = false;
   private subNameControl: Subscription;
   private titleLabel: string;
 
