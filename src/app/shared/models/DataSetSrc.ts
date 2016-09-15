@@ -26,15 +26,15 @@ export class DataSetSrc {
     copy.Ticker = this.Ticker;
     return copy;
   }
-  public reset() : void {
-    for (let prop in this) {
-      if (typeof this[prop] === 'function') {
-        continue;
-      }
-      else {
-        this[prop] = null;
-      }
-    }
-    this.DataPoints = {};
-  }
+  // public reset() : void {
+  //   for (let prop in this) {
+  //     if (typeof this[prop] === 'function') {
+  //       continue;
+  //     }
+  //     else {
+  //       this[prop] = null;
+  //     }
+  //   }
+  //   this.dataPoints = {};
+  // }
 }

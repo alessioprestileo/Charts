@@ -91,7 +91,7 @@ export class ShowChartComponent implements DoCheck, OnDestroy, OnInit {
       if (firstDataSet) {
         labels = [];
       }
-      let dataPoints: Object = dataSets[i].DataPoints;
+      let dataPoints: Object = dataSets[i].dataPoints;
       let data: number[] = [];
       for (let label in dataPoints){
         if (firstDataSet) {

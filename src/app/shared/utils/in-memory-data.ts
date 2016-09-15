@@ -97,10 +97,10 @@ export class InMemoryData {
       {
         id: 1,
         dataSet: {
-          "Id":"abc",
-          "Ticker": "ALESSIO",
-          "Field": "Field1",
-          "DataPoints": {
+          "id":"abc",
+          "ticker": "ALESSIO",
+          "field": "Field1",
+          "dataPoints": {
             "Monday": 1,
             "Tuesday": 2,
             "Wednesday": 3,
@@ -111,10 +111,10 @@ export class InMemoryData {
       {
         id: 2,
         dataSet: {
-          "Id":"def",
-          "Ticker": "ALESSIO",
-          "Field": "Field2",
-          "DataPoints": {
+          "id":"def",
+          "ticker": "ALESSIO",
+          "field": "Field2",
+          "dataPoints": {
             "Thursday": 4,
             "Friday": 5,
             "Saturday": 6,

@@ -3,27 +3,50 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <label class="app-input-box-label"
-                 style="font-weight: bold">
+          <h2>
             {{title}}
-          </label>
+          </h2>
         </div>
       </div>
       <br>
-      <div class="row">
-        <div class="col-xs-12">
-          <app-input-box [label]="'Name:'"
-                         [inFormControl]="formGroup.controls['name']">
-          </app-input-box>
-        </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col-xs-12">
-          <app-dataset-form [currentDataSet]="collection.dataSet"
-                            [formGroup]="formGroup"
-                            [newDataSet]="collIdKeyword === 'New'">
-          </app-dataset-form>
+      <div style="border: 3px solid #d1b394;
+               border-radius: 48px;
+               margin-bottom: 2%;
+               padding: 2% 4%;">
+        <app-collection-form
+          [currentCollection]="collection"
+          [currentPosition]="null"
+          [detachedCollection]="true"
+          [formGroup]="formGroup"
+          [newCollection]="newCollection">
+        </app-collection-form>
+        <br>
+        <div class="container-fluid">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-offset-6 col-sm-3">
+                <button type="button" class="btn btn-default"
+                        [disabled]="!(obFormGroupValid | async)"
+                        (click)="onSave()"
+                        style="border-radius: 8px;
+                                 height: 30px;
+                                 outline: 0;
+                                 width: 100%">
+                  Save
+                </button>
+              </div>
+              <div class="col-sm-3">
+                <button type="button" class="btn btn-default"
+                        (click)="onBackToDashboard()"
+                        style="border-radius: 8px;
+                                 height: 30px;
+                                 outline: 0;
+                                 width: 100%">
+                  Back to dashboard
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

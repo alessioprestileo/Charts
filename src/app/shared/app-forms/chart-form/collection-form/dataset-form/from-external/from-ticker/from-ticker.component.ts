@@ -26,9 +26,8 @@ export class FromTickerComponent
   @Input() protected dataSetSrcBloodhoundSrcs: any;
   @Input() private inFormGroup: FormGroup;
   @Input() protected obDataSetFeedback: BehaviorSubject<DataSetFeedback>;
-  @Output() private hasNotSuccessEmitter = new EventEmitter();
-  @Output() private hasSuccessEmitter = new EventEmitter();
-
+  @Output() private emHasNotSuccess = new EventEmitter();
+  @Output() private emHasSuccess = new EventEmitter();
   private currentDataSetSrcId: string;
   private subDataSetFeedback: Subscription;
 
@@ -51,10 +50,10 @@ export class FromTickerComponent
     this.subDataSetFeedback.unsubscribe();
   }
   public onSearchBoxNotSuccess(prop: string) : void {
-    this.hasNotSuccessEmitter.emit(prop);
+    this.emHasNotSuccess.emit(prop);
   }
   public onSearchBoxSuccess(info: Object) : void {
-    this.hasSuccessEmitter.emit(info);
+    this.emHasSuccess.emit(info);
   }
   private processDataSetFeedback(dataSetFeedback : DataSetFeedback) : void {
     let promise : Promise<any> = new Promise(
@@ -64,28 +63,26 @@ export class FromTickerComponent
       let property: string = dataSetFeedback.prop;
       let value: string = dataSetFeedback.val;
       if (this.dataSetFeedbackWasReset(dataSetFeedback)) {
-        // this.currentDataSet.resetProps();
-        this.currentDataSet = new DataSet();
+        this.currentDataSet.resetProps();
         this.resetDataSetSrcBloodhoundSrc();
       }
       switch (property) {
         case 'Ticker':
-          // this.currentDataSet.resetProps();
           this.resetDataSetSrcBloodhoundSrc();
-          this.currentDataSet = new DataSet();
+          this.currentDataSet.resetProps();
           if (value) {
             this.setFilteredDataSetSrcBloodhoundSrc('Field', 'Ticker', value);
-            this.currentDataSet.Ticker = value;
+            this.currentDataSet.ticker = value;
           }
           break;
         case 'Field':
           this.currentDataSetSrcId = null;
-          let tickerValue: string = this.currentDataSet.Ticker;
+          let tickerValue: string = this.currentDataSet.ticker;
           if (tickerValue && value) {
-            this.currentDataSet.Field = value;
+            this.currentDataSet.field = value;
             this.getDataSetSrcFromTickerField(tickerValue, value).then(
               (dataSetSrc: DataSetSrc): void => {
-                this.currentDataSet.DataPoints = dataSetSrc.DataPoints;
+                this.currentDataSet.dataPoints = dataSetSrc.DataPoints;
                 this.currentDataSetSrcId = dataSetSrc.Id;
               }
             );

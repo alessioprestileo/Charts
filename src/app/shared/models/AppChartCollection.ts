@@ -10,10 +10,15 @@ export class AppChartCollection {
     this.dataSet = dataSet;
 	}
 
-	createCopy() : AppChartCollection {
+	public createCopy() : AppChartCollection {
 	  let copy: AppChartCollection = new AppChartCollection();
     copy.dataSet = this.dataSet.createCopy();
     copy.name = this.name;
     return copy;
+  }
+  public importPropsFromUserDataObject(collection: Object) : void {
+    this.dataSet.importPropsFromUserDataObject(collection['dataSet']);
+    this.id = collection['id'];
+    this.name = collection['name'];
   }
 }

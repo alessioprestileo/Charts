@@ -43,7 +43,6 @@ class CollectionInput {
 })
 export class ChartFormComponent implements DoCheck, OnDestroy, OnInit {
   @Input() private inputChart: AppChart;
-
   private chartFormGroup: FormGroup;
   private chartTypeValues: string[] =  [
     'bar', 'doughnut', 'line', 'pie', 'polarArea', 'radar'

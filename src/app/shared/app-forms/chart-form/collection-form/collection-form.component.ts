@@ -1,6 +1,9 @@
-import {Component, DoCheck, Input, OnDestroy, OnInit } from '@angular/core';
-import { REACTIVE_FORM_DIRECTIVES, FormControl,
-  FormGroup, Validators } from '@angular/forms';
+import {
+  Component, DoCheck, Input, OnDestroy, OnInit,
+} from '@angular/core';
+import {
+  REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup, Validators
+} from '@angular/forms';
 
 import { Subscription }   from 'rxjs/Rx';
 
@@ -13,14 +16,16 @@ import { DataSetFormComponent } from './dataset-form/dataset-form.component';
   selector: 'app-collection-form',
   templateUrl: 'collection-form.component.html',
   styleUrls: ['collection-form.component.css'],
-  directives: [REACTIVE_FORM_DIRECTIVES, DataSetFormComponent,
-               InputBoxComponent]
+  directives: [
+    REACTIVE_FORM_DIRECTIVES, DataSetFormComponent, InputBoxComponent
+  ]
 })
 export class CollectionFormComponent implements DoCheck, OnDestroy, OnInit {
   @Input() private currentPosition: number;
   @Input() private currentCollection: AppChartCollection;
+  @Input() private detachedCollection: boolean = false;
   @Input() private formGroup: FormGroup;
-
+  @Input() private newCollection: boolean = true;
   private subNameControl: Subscription;
   private titleLabel: string;
 
@@ -28,27 +33,36 @@ export class CollectionFormComponent implements DoCheck, OnDestroy, OnInit {
 
   ngOnInit() {
     this.titleLabel = 'Collection';
-    this.addFormControlsAndSubs();
+    this.addFormControls();
+    this.createControlsSubs();
   }
   ngOnDestroy() {
+    this.removeFormControls();
     this.cancelSubs();
   }
   ngDoCheck() {
   }
 
-  private addFormControlsAndSubs() : void {
+  private addFormControls() : void {
     this.formGroup.addControl(
       'name', new FormControl(this.currentCollection.name, Validators.required)
     );
-    this.subNameControl = this.formGroup.controls['name']
-                                        .valueChanges.subscribe(
-      (value: string) : void => {
-        this.formGroup.updateValueAndValidity();
-        this.currentCollection.name = value;
-      }
-    );
+  }
+  private cancelControlsSubs() : void {
+    this.subNameControl.unsubscribe();
   }
   private cancelSubs() : void {
-    this.subNameControl.unsubscribe();
+    this.cancelControlsSubs();
+  }
+  private createControlsSubs() : void {
+    this.subNameControl = this.formGroup.controls['name']
+      .valueChanges.subscribe(
+        (value: string) : void => {
+          this.currentCollection.name = value;
+        }
+      );
+  }
+  private removeFormControls() : void {
+    this.formGroup.removeControl('name');
   }
 }

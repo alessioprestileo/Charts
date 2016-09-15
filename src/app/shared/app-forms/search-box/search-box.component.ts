@@ -25,11 +25,10 @@ export class SearchBoxComponent implements OnDestroy, OnInit {
   @Input() private method: string;
   @Input() private source: any;
   @Input() private targetProperty: string;
-  @Output() private hasNotSuccessEmitter = new EventEmitter();
-  @Output() private hasSuccessEmitter = new EventEmitter();
+  @Output() private emHasNotSuccess = new EventEmitter();
+  @Output() private emHasSuccess = new EventEmitter();
   @ViewChild("box") private box: ElementRef;
   @ViewChild("searchBox") private searchBox: ElementRef;
-
   private boxFormControl: FormControl;
   private hasSelection: boolean = false;
   private labelDefaultCssClass: string = 'app-input-box-label';
@@ -41,14 +40,14 @@ export class SearchBoxComponent implements OnDestroy, OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.addFormControlsAndSubs();
+    this.addFormControls();
     this.buildSuggestions();
   }
   ngOnDestroy() {
     this.removeFormControls();
   }
 
-  private addFormControlsAndSubs() {
+  private addFormControls() {
     this.inFormGroup.addControl(
       this.formControlKey,
       new FormControl(null, Validators.required)
@@ -64,12 +63,6 @@ export class SearchBoxComponent implements OnDestroy, OnInit {
       <FormControl>this.inFormGroup.controls[
         this.formControlKey + '-typeahead'
       ]
-    );
-    this.boxFormControl.valueChanges.subscribe(
-      () : void => this.inFormGroup.updateValueAndValidity()
-    );
-    this.typeaheadFormControl.valueChanges.subscribe(
-      () : void => this.inFormGroup.updateValueAndValidity()
     );
   }
   private buildSuggestions() {
@@ -182,11 +175,11 @@ export class SearchBoxComponent implements OnDestroy, OnInit {
         'targetProperty': this.targetProperty,
         'value': this.lastSelection
       };
-      this.hasSuccessEmitter.emit(info);
+      this.emHasSuccess.emit(info);
       this.typeaheadFormControl.setValue('typeaheadSuccess');
     }
     else {
-      this.hasNotSuccessEmitter.emit(this.targetProperty);
+      this.emHasNotSuccess.emit(this.targetProperty);
       this.typeaheadFormControl.setValue('typeaheadNotSuccess');
     }
     return result;

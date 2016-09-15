@@ -1,9 +1,9 @@
 import {
-  Component, OnDestroy, OnInit, Input, DoCheck,
-  Inject
+  AfterViewChecked, Component, Inject, OnDestroy, OnInit, DoCheck
 } from '@angular/core';
+import { Location }    from '@angular/common';
 import {
-  REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup, Validators, ValidatorFn
+  REACTIVE_FORM_DIRECTIVES, FormGroup, ValidatorFn
 } from '@angular/forms';
 
 import {BehaviorSubject, Subscription } from 'rxjs/Rx';
@@ -22,81 +22,79 @@ import { UserDataService } from "../../shared/services/user-data.service";
   templateUrl: 'collection-detail.component.html',
   styleUrls: ['collection-detail.component.css'],
   directives: [
-    CollectionFormComponent, REACTIVE_FORM_DIRECTIVES, DataSetFormComponent,
-    InputBoxComponent
+    CollectionFormComponent, REACTIVE_FORM_DIRECTIVES, CollectionFormComponent,
+    DataSetFormComponent, InputBoxComponent
   ]
 })
-export class CollectionDetailComponent implements OnDestroy, OnInit, DoCheck {
+export class CollectionDetailComponent
+implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
   private collection: AppChartCollection;
   private collIdKeyword: string;
   private formGroup: FormGroup;
   private formGroupValidator: ValidatorFn = formGroupValidator;
-  private obChartFormValid: BehaviorSubject<boolean>;
-  private subCurrentUrl: Subscription;
+  private newCollection: boolean = false;
+  private obFormGroupValid: BehaviorSubject<boolean>;
+  private prevBrowserPath: string;
   private subFormGroup: Subscription;
-  private subNameControl: Subscription;
   private title: string;
 
   constructor(
     @Inject('ROUTES_DICT') private ROUTES_DICT,
+    private location: Location,
     private appRoutingService: AppRoutingService,
     private userDataService: UserDataService
   ) {
   }
 
   ngOnInit() {
-    this.obChartFormValid = new BehaviorSubject(null);
-
-    this.subCurrentUrl = this.appRoutingService.currentUrl.subscribe(
-      (url: string) : void => {
-        this.setIdKeyword(url);
-        if (this.collIdKeyword) {
-          this.setCollection().then(() => {
-
-            console.log('url = ', url);
-
-            this.setTitle(url);
-            this.createFormGroup();
-            this.addControlsAndSubs();
-          });
-        }
-      }
-    );
+    this.createFormGroup();
+    this.obFormGroupValid = new BehaviorSubject(null);
   }
   ngOnDestroy() {
     this.cancelSubs();
   }
+  ngAfterViewChecked() {
+    let browserPath: string = this.location.path();
+    if (browserPath && browserPath !== this.prevBrowserPath) {
+      this.prevBrowserPath = browserPath;
+      this.setIdKeyword(browserPath);
+      if (this.collIdKeyword) {
+        this.setCollection().then(() => {
+          this.setTitle();
+        });
+      }
+    }
+  }
   ngDoCheck() {
 
-    console.log('title = ', this.title);
+    // console.log('formGroup = ', this.formGroup);
+    if (this.collection) console.log('collection = ', this.collection);
+    if (this.collection) console.log('dataSet = ', this.collection.dataSet);
 
   }
 
-  private addControlsAndSubs() : void {
-    this.formGroup.addControl(
-      'name', new FormControl(this.collection.name, Validators.required)
-    );
-    this.subNameControl = this.formGroup.controls['name']
-      .valueChanges.subscribe(
-        (value: string) : void => {
-          this.formGroup.updateValueAndValidity();
-          this.collection.name = value;
-        }
-      );
-  }
   private cancelSubs() : void {
-    this.subCurrentUrl.unsubscribe();
     this.subFormGroup.unsubscribe();
-    this.subNameControl.unsubscribe();
   }
   private createFormGroup() : void {
     this.formGroup = new FormGroup({}, null, this.formGroupValidator);
     this.subFormGroup = this.formGroup.valueChanges.subscribe(
-      () => this.obChartFormValid.next(this.formGroup.valid)
+      () => this.obFormGroupValid.next(this.formGroup.valid)
     );
+  }
+  public onBackToDashboard() : void {
+    let link: string[] = [
+      '/' + this.ROUTES_DICT.DASHBOARD
+    ];
+    this.appRoutingService.navigate(link);
+  }
+  public onSave() : void {
+    this.userDataService.saveItem('collections', this.collection);
+    this.onBackToDashboard();
   }
   private setCollection() : Promise<any> {
     if (this.collIdKeyword === 'New') {
+      this.newCollection = true;
       let promise: Promise<any> = new Promise(
         (resolve, reject) => resolve()
       );
@@ -107,7 +105,8 @@ export class CollectionDetailComponent implements OnDestroy, OnInit, DoCheck {
     else {
       return this.userDataService
         .getItem('collections', +this.collIdKeyword).then(coll => {
-          this.collection = (<AppChartCollection>coll)
+          this.collection = new AppChartCollection();
+          this.collection.importPropsFromUserDataObject(coll);
         });
     }
   }
@@ -120,13 +119,8 @@ export class CollectionDetailComponent implements OnDestroy, OnInit, DoCheck {
     else {
       this.collIdKeyword = null;
     }
-
   }
-  private setTitle(url: string) : void {
-
-
-    console.log('this.collectionId = ', this.collIdKeyword);
-
+  private setTitle() : void {
     this.title = (this.collIdKeyword === 'New') ?
       'Insert data for the new collection' :
       'Edit data for the collection "' + this.collection.name + '"';

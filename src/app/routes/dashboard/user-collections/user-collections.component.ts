@@ -78,7 +78,7 @@ export class UserCollectionsComponent implements OnDestroy, OnInit {
   }
   public onNewCollection() {
     let link: string[] = [
-      this.ROUTES_DICT.COLLECTIONS_DETAIL,
+      '/' + this.ROUTES_DICT.COLLECTIONS_DETAIL,
       'New'
     ];
     this.appRoutingService.navigate(link);
@@ -86,7 +86,7 @@ export class UserCollectionsComponent implements OnDestroy, OnInit {
   public onTableEdit(collection: AppChartCollection) : void {
     let id: string = collection.id.toString();
     let link: string[] = [
-      this.ROUTES_DICT.COLLECTIONS_DETAIL,
+      '/' + this.ROUTES_DICT.COLLECTIONS_DETAIL,
       id
     ];
     this.appRoutingService.navigate(link);

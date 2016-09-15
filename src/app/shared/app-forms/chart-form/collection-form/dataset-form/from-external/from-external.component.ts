@@ -30,7 +30,6 @@ extends DataSetBasicHandler
 implements DoCheck, OnDestroy, OnInit {
   @Input() protected currentDataSet: DataSet;
   @Input() private formGroup: FormGroup;
-
   private collapseDataSetForm: boolean = false;
   protected dataSetSrcBloodhoundSrcs: DataSetSrcBloodhoundSrcs = {
     'Field': {
@@ -61,22 +60,22 @@ implements DoCheck, OnDestroy, OnInit {
     this.createObsAndSubs();
   }
   ngOnDestroy() {
+    this.removeControls();
     this.cancelSubs();
   }
   ngDoCheck() {
-
-    console.log('this.currentDataSet external = ', this.currentDataSet);
-
   }
 
   private addFormControls() : void {
     this.formGroup.addControl('dataSet-radio', new FormControl('option0'));
   }
-  private cancelSubs() : void {
+  private cancelControlsSubs() : void {
     this.subRadioControl.unsubscribe();
   }
-  private createObsAndSubs() : void {
-    this.obDataSetFeedback = new BehaviorSubject(new DataSetFeedback());
+  private cancelSubs() : void {
+    this.cancelControlsSubs();
+  }
+  private createControlsObsAndSubs() : void {
     this.obRadioSelection = new BehaviorSubject(
       this.formGroup.controls['dataSet-radio'].value
     );
@@ -85,14 +84,18 @@ implements DoCheck, OnDestroy, OnInit {
         (radioSelection: string) : void => {
           this.formGroup.updateValueAndValidity();
           this.obRadioSelection.next(radioSelection);
-          // this.currentDataSet.resetProps();
-          this.currentDataSet = new DataSet();
-          // this.previousDatSet.resetProps();
-          this.previousDatSet = new DataSet();
+          // this.currentDataSet = new DataSet();
+          // this.previousDatSet = new DataSet();
+          this.currentDataSet.resetProps();
+          this.previousDatSet.resetProps();
           this.resetDataSetSrcBloodhoundSrc();
           this.resetDataSetFeedback();
         }
       );
+  }
+  private createObsAndSubs() : void {
+    this.obDataSetFeedback = new BehaviorSubject(new DataSetFeedback());
+    this.createControlsObsAndSubs();
   }
   private isNewDataSetFeedback(dataSetFeedback: DataSetFeedback) : boolean {
     if (this.previousDatSet[dataSetFeedback.prop] !== dataSetFeedback.val) {
@@ -118,7 +121,12 @@ implements DoCheck, OnDestroy, OnInit {
       this.obDataSetFeedback.next(feedback);
     }
   }
+  private removeControls() : void {
+    this.formGroup.removeControl('dataSet-radio');
+  }
   private resetDataSetFeedback() : void {
-    this.obDataSetFeedback.next(new DataSetFeedback('resetProps', 'resetProps'));
+    this.obDataSetFeedback.next(
+      new DataSetFeedback('resetProps', 'resetProps')
+    );
   }
 }
