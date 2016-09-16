@@ -8,7 +8,8 @@ import {
 
 import {BehaviorSubject, Subscription } from 'rxjs/Rx';
 
-import { AppChartCollection } from "../../shared/models/AppChartCollection";
+import { ChartColl } from "../../shared/models/ChartColl";
+import { ChartCollSrc_UserData } from "../../shared/models/ChartCollSrc_UserData";
 import { AppRoutingService } from "../../shared/services/app-routing.service";
 import { CollectionFormComponent } from "../../shared/app-forms/chart-form/collection-form/collection-form.component";
 import { DataSetFormComponent } from "../../shared/app-forms/chart-form/collection-form/dataset-form/dataset-form.component";
@@ -22,13 +23,13 @@ import { UserDataService } from "../../shared/services/user-data.service";
   templateUrl: 'collection-detail.component.html',
   styleUrls: ['collection-detail.component.css'],
   directives: [
-    CollectionFormComponent, REACTIVE_FORM_DIRECTIVES, CollectionFormComponent,
-    DataSetFormComponent, InputBoxComponent
+    CollectionFormComponent, DataSetFormComponent, InputBoxComponent,
+    REACTIVE_FORM_DIRECTIVES
   ]
 })
 export class CollectionDetailComponent
 implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
-  private collection: AppChartCollection;
+  private collection: ChartColl;
   private collIdKeyword: string;
   private formGroup: FormGroup;
   private formGroupValidator: ValidatorFn = formGroupValidator;
@@ -66,11 +67,6 @@ implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
     }
   }
   ngDoCheck() {
-
-    // console.log('formGroup = ', this.formGroup);
-    if (this.collection) console.log('collection = ', this.collection);
-    if (this.collection) console.log('dataSet = ', this.collection.dataSet);
-
   }
 
   private cancelSubs() : void {
@@ -89,8 +85,9 @@ implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
     this.appRoutingService.navigate(link);
   }
   public onSave() : void {
-    this.userDataService.saveItem('collections', this.collection);
-    this.onBackToDashboard();
+    this.userDataService.saveItem('collections', this.collection).then(
+      () => this.onBackToDashboard()
+    );
   }
   private setCollection() : Promise<any> {
     if (this.collIdKeyword === 'New') {
@@ -99,14 +96,16 @@ implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
         (resolve, reject) => resolve()
       );
       return promise.then(() => {
-        this.collection = new AppChartCollection();
+        this.collection = new ChartColl();
       });
     }
     else {
       return this.userDataService
         .getItem('collections', +this.collIdKeyword).then(coll => {
-          this.collection = new AppChartCollection();
-          this.collection.importPropsFromUserDataObject(coll);
+          this.collection = new ChartColl();
+          this.collection.importPropsFromSrc_UserData(
+            <ChartCollSrc_UserData>coll
+          );
         });
     }
   }

@@ -73,6 +73,12 @@ export class UserDataService {
       (items: Item[]) => items.filter(item => item.id === id)[0]
     );
   }
+  // Get latest id used to save an item
+  public getLastUsedId(target: string) : Promise<number> {
+    return this.getAll(target).then(
+      (items: Item[]) => {return items.length}
+    );
+  }
   // Get all unique values for an item property in the targeted collection
   public getUniquePropValues(target: string, propKey: string) : Promise<string[]> {
     return this.getAll(target).then((items: Item[]) : string[] => {

@@ -8,7 +8,7 @@ import {BehaviorSubject, Subscription }   from 'rxjs/Rx';
 import { DataSet } from "../../../../../models/DataSet";
 import { DataSetBasicHandler } from "./../DataSetBasicHandler";
 import { DataSetFeedback } from "../../../../../models/DataSetFeedback";
-import { DataSetSrcBloodhoundSrcs } from "../../../../../models/DataSetSrcBloodhoundSrcs";
+import { BHSrcsDataSetSrc_External } from "../../../../../models/BHSrcsDataSetSrc_External";
 import { ExternalService } from '../../../../../services/external.service';
 import { FromFieldComponent } from "./from-field/from-field.component";
 import { FromIdComponent } from "./from-id/from-id.component";
@@ -22,7 +22,7 @@ import { RadioInputComponent } from "../../../../radio-input/radio-input.compone
   styleUrls: ['from-external.component.css'],
   directives: [
     FromFieldComponent, FromIdComponent, FromTickerComponent,
-    REACTIVE_FORM_DIRECTIVES, RadioInputComponent
+    RadioInputComponent, REACTIVE_FORM_DIRECTIVES
   ]
 })
 export class FromExternalComponent
@@ -31,7 +31,7 @@ implements DoCheck, OnDestroy, OnInit {
   @Input() protected currentDataSet: DataSet;
   @Input() private formGroup: FormGroup;
   private collapseDataSetForm: boolean = false;
-  protected dataSetSrcBloodhoundSrcs: DataSetSrcBloodhoundSrcs = {
+  protected dataSetSrcBloodhoundSrcs: BHSrcsDataSetSrc_External = {
     'Field': {
       'defaultSource': null,
       'filteredSource': null,
@@ -84,8 +84,6 @@ implements DoCheck, OnDestroy, OnInit {
         (radioSelection: string) : void => {
           this.formGroup.updateValueAndValidity();
           this.obRadioSelection.next(radioSelection);
-          // this.currentDataSet = new DataSet();
-          // this.previousDatSet = new DataSet();
           this.currentDataSet.resetProps();
           this.previousDatSet.resetProps();
           this.resetDataSetSrcBloodhoundSrc();

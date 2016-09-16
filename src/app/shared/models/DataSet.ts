@@ -1,3 +1,6 @@
+import { appIsEmptyObject } from '../appFunctions'
+import { DataSetSrc_UserData } from './DataSetSrc_UserData'
+
 export class DataSet {
   public dataPoints: {[label: string] : number};
   public field: string;
@@ -23,18 +26,31 @@ export class DataSet {
     copy.ticker = this.ticker;
     return copy;
   }
-  public importPropsFromUserDataObject(dataSet: Object) : void {
-    let originalDataPoints: {[label: string] : number} = dataSet['dataPoints'];
+  public isEmpty() : boolean {
+    let result: boolean;
+    if (
+      appIsEmptyObject(this.dataPoints) &&
+      this.field === null &&
+      this.ticker === null
+    ) {
+      result = true;
+    }
+    else {
+      result = false;
+    }
+    return result;
+  }
+  public importPropsFromUserDataSrc_UserData(
+    dataSetSrc: DataSetSrc_UserData
+  ) : void {
+    let originalDataPoints: {[label: string] : number} = dataSetSrc.dataPoints;
     for (let label in originalDataPoints) {
       this.dataPoints[label] = originalDataPoints[label];
     }
-    this.field = dataSet['field'];
-    this.ticker = dataSet['ticker'];
+    this.field = dataSetSrc.field;
+    this.ticker = dataSetSrc.ticker;
   }
   public resetProps() : void {
-
-    console.log('called');
-
     for (let prop in this) {
       if (typeof this[prop] === 'function') {
         continue;

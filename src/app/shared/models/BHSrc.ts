@@ -1,4 +1,4 @@
-export class BloodhoundSrc {
+export class BHSrc {
   defaultSource: any;
   filteredSource: any;
 

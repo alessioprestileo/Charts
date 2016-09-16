@@ -6,7 +6,7 @@ import { FormGroup } from "@angular/forms";
 import {BehaviorSubject, Subscription }   from 'rxjs/Rx';
 
 import { DataSet } from "../../../../../../models/DataSet";
-import { DataSetSrc } from "../../../../../../models/DataSetSrc";
+import { DataSetSrc_External } from "../../../../../../models/DataSetSrc_External";
 import { DataSetFeedback } from "../../../../../../models/DataSetFeedback";
 import { DataSetBasicHandler } from "../../DataSetBasicHandler";
 import { ExternalService } from "../../../../../../services/external.service";
@@ -70,7 +70,7 @@ implements OnInit, OnDestroy {
       this.resetDataSetSrcBloodhoundSrc();
       if (property === 'Id' && value) {
         this.externalService.getDataSetSrc(value).then(
-          (dataSetSrc: DataSetSrc) : void => {
+          (dataSetSrc: DataSetSrc_External) : void => {
             this.currentDataSet.dataPoints = dataSetSrc.DataPoints;
             this.currentDataSet.field = dataSetSrc.Field;
             this.currentDataSetSrcId = dataSetSrc.Id;

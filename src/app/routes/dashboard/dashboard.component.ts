@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { UserChartsComponent } from './user-charts/user-charts.component'
 import { UserCollectionsComponent } from './user-collections/user-collections.component'
 
 
@@ -8,7 +9,7 @@ import { UserCollectionsComponent } from './user-collections/user-collections.co
   selector: 'app-dashboard',
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.css'],
-  directives: [UserCollectionsComponent]
+  directives: [UserChartsComponent, UserCollectionsComponent]
 })
 export class DashboardComponent implements OnInit {
 
@@ -16,5 +17,4 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

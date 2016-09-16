@@ -6,7 +6,7 @@ import { FormGroup } from "@angular/forms";
 import {BehaviorSubject, Subscription }   from 'rxjs/Rx';
 
 import { DataSet } from "../../../../../../models/DataSet";
-import { DataSetSrc } from "../../../../../../models/DataSetSrc";
+import { DataSetSrc_External } from "../../../../../../models/DataSetSrc_External";
 import { DataSetBasicHandler } from "../../DataSetBasicHandler";
 import { DataSetFeedback } from "../../../../../../models/DataSetFeedback";
 import { ExternalService } from "../../../../../../services/external.service";
@@ -81,7 +81,7 @@ implements OnInit, OnDestroy {
           if (fieldValue && value) {
             this.currentDataSet.ticker = value;
             this.getDataSetSrcFromTickerField(value, fieldValue).then(
-              (dataSetSrc: DataSetSrc): void => {
+              (dataSetSrc: DataSetSrc_External): void => {
                 this.currentDataSet.dataPoints = dataSetSrc.DataPoints;
                 this.currentDataSetSrcId = dataSetSrc.Id;
               }

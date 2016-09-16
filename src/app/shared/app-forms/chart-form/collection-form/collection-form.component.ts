@@ -7,7 +7,7 @@ import {
 
 import { Subscription }   from 'rxjs/Rx';
 
-import { AppChartCollection } from "../../../models/AppChartCollection";
+import { ChartColl } from "../../../models/ChartColl";
 import { InputBoxComponent } from '../../input-box/input-box.component';
 import { DataSetFormComponent } from './dataset-form/dataset-form.component';
 
@@ -17,21 +17,22 @@ import { DataSetFormComponent } from './dataset-form/dataset-form.component';
   templateUrl: 'collection-form.component.html',
   styleUrls: ['collection-form.component.css'],
   directives: [
-    REACTIVE_FORM_DIRECTIVES, DataSetFormComponent, InputBoxComponent
+    DataSetFormComponent, InputBoxComponent, REACTIVE_FORM_DIRECTIVES
   ]
 })
 export class CollectionFormComponent implements DoCheck, OnDestroy, OnInit {
   @Input() private currentPosition: number;
-  @Input() private currentCollection: AppChartCollection;
+  @Input() private currentCollection: ChartColl;
   @Input() private detachedCollection: boolean = false;
   @Input() private formGroup: FormGroup;
-  @Input() private newCollection: boolean = true;
+  private hasEmptyDataSet: boolean;
   private subNameControl: Subscription;
   private titleLabel: string;
 
   constructor() {}
 
   ngOnInit() {
+    this.setHasEmptyDataSet();
     this.titleLabel = 'Collection';
     this.addFormControls();
     this.createControlsSubs();
@@ -61,6 +62,10 @@ export class CollectionFormComponent implements DoCheck, OnDestroy, OnInit {
           this.currentCollection.name = value;
         }
       );
+  }
+  private setHasEmptyDataSet() : void {
+    this.hasEmptyDataSet = (this.currentCollection.dataSet.isEmpty()) ?
+      true : false;
   }
   private removeFormControls() : void {
     this.formGroup.removeControl('name');
