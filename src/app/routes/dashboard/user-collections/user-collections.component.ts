@@ -10,6 +10,7 @@ import { AppRoutingService } from '../../../shared/services/app-routing.service'
 import { DataTableComponent } from "../../../shared/data-table/data-table.component";
 import { HeaderEntry, TableInput } from '../../../shared/models/table-input'
 import { UserDataService } from '../../../shared/services/user-data.service'
+import {ChartSrc_UserData} from "../../../shared/models/ChartSrc_UserData";
 
 @Component({
   moduleId: module.id,
@@ -87,12 +88,34 @@ export class UserCollectionsComponent implements OnDestroy, OnInit {
     this.appRoutingService.navigate(link);
   }
   public onTableRemove(collection: ChartColl) : void {
-    this.userDataService.deleteItem('collections', collection.id).then(
-      () => {
-        this.collections = this.collections.filter(
-          c => c.id !== collection.id
-        );
-        this.updateTableInput();
+    this.userDataService.getAll('charts').then(
+      (charts) => {
+        let dependentCharts: string = '';
+        let chartsLength: number = charts.length;
+        for (let i = 0; i < chartsLength; i++) {
+          let chartSrc: ChartSrc_UserData = <ChartSrc_UserData>charts[i];
+          let collectionsLength: number = chartSrc.collectionsIds.length;
+          for (let j = 0; j < collectionsLength; j++) {
+            if (chartSrc.collectionsIds[j] === collection.id) {
+              dependentCharts += '"' + chartSrc.name + '"' + '\n';
+            }
+          }
+        }
+        if (dependentCharts) {
+          alert('Collection "' + collection.name + '" can\'t be removed ' +
+            'because it is needed by the following charts: \n' +
+            dependentCharts);
+        }
+        else {
+          this.userDataService.deleteItem('collections', collection.id).then(
+            () => {
+              this.collections = this.collections.filter(
+                c => c.id !== collection.id
+              );
+              this.updateTableInput();
+            }
+          );
+        }
       }
     );
   }

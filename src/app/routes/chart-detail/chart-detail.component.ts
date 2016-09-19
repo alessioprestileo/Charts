@@ -88,14 +88,17 @@ implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
   public onSave() : void {
     let collections: ChartColl[] = this.chart.collections;
     let length: number = collections.length;
-    for (let i = 0; i < length; i++) {
-      this.userDataService.saveItem('collections', collections[i]).then(
-        () => {
-          if (collections[i].id === null) {
-            this.userDataService.getLastUsedId('collections').then(
-              (id: number) => {
-                collections[i].id = id;
-                if (i === (length - 1)) {
+    this.userDataService.getLastUsedId('collections').then(
+      (id: number) => {
+        let lastCollectionId: number = id;
+        let counter: number = 0;
+        for (let i = 0; i < length; i++) {
+          this.userDataService.saveItem('collections', collections[i]).then(
+            () => {
+              let localCounter: number = ++counter;
+              if (collections[i].id === null) {
+                collections[i].id = ++lastCollectionId;
+                if (localCounter === length) {
                   this.userDataService.saveItem(
                     'charts', this.chart.toChartSrc_UserData()
                   ).then(
@@ -103,20 +106,20 @@ implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
                   );
                 }
               }
-            );
-          }
-          else{
-            if (i === (length - 1)) {
-              this.userDataService.saveItem(
-                'charts', this.chart.toChartSrc_UserData()
-              ).then(
-                () => this.onBackToDashboard()
-              );
+              else {
+                if (localCounter === length) {
+                  this.userDataService.saveItem(
+                    'charts', this.chart.toChartSrc_UserData()
+                  ).then(
+                    () => this.onBackToDashboard()
+                  );
+                }
+              }
             }
-          }
+          );
         }
-      );
-    }
+      }
+    );
   }
   private setChart() : Promise<any> {
     this.chartIsReady = false;

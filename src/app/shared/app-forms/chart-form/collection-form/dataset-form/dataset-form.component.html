@@ -123,5 +123,10 @@
       [currentDataSet]="currentDataSet"
       [formGroup]="formGroup">
     </app-from-external>
+    <app-from-user-data
+      *ngIf="formGroup.controls['source'].value === sourcesValues[1]"
+      [currentDataSet]="currentDataSet"
+      [formGroup]="formGroup">
+    </app-from-user-data>
   </div>
 </div>

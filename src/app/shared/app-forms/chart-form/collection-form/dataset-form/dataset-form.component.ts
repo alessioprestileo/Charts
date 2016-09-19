@@ -7,13 +7,16 @@ import {
 
 import { DataSet } from "../../../../models/DataSet";
 import { FromExternalComponent } from './from-external/from-external.component'
+import { FromUserDataComponent } from './from-user-data/from-user-data.component'
 
 @Component({
   moduleId: module.id,
   selector: 'app-dataset-form',
   templateUrl: 'dataset-form.component.html',
   styleUrls: ['dataset-form.component.css'],
-  directives: [FromExternalComponent, REACTIVE_FORM_DIRECTIVES]
+  directives: [
+    FromExternalComponent, FromUserDataComponent, REACTIVE_FORM_DIRECTIVES
+  ]
 })
 export class DataSetFormComponent
 implements DoCheck, OnDestroy, OnInit {
@@ -27,7 +30,7 @@ implements DoCheck, OnDestroy, OnInit {
   ];
   private sourcesMap: {[label: string] : string} = {
     'external_source': 'external source',
-    'user_data': 'user data'
+    'user_data': 'your collections'
   };
 
   constructor() {}
