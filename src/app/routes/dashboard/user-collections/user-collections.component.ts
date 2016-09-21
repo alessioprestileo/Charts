@@ -8,7 +8,7 @@ import { ChartColl } from '../../../shared/models/ChartColl'
 import { ChartCollSrc_UserData } from "../../../shared/models/ChartCollSrc_UserData";
 import { AppRoutingService } from '../../../shared/services/app-routing.service'
 import { DataTableComponent } from "../../../shared/data-table/data-table.component";
-import { HeaderEntry, TableInput } from '../../../shared/models/table-input'
+import { HeaderEntry, TableInput } from '../../../shared/models/table-input-classes'
 import { UserDataService } from '../../../shared/services/user-data.service'
 import {ChartSrc_UserData} from "../../../shared/models/ChartSrc_UserData";
 

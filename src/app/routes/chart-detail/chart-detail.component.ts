@@ -138,20 +138,9 @@ implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
         .getItem('charts', +this.chartIdKeyword).then(chart => {
           let chartSrc: ChartSrc_UserData = <ChartSrc_UserData>chart;
           this.chart = new Chart();
-          this.chart.importPropsFromSrc_UserData(chartSrc);
-          let collectionsLength: number = chartSrc.collectionsIds.length;
-          for (let j = 0; j < collectionsLength; j++) {
-            this.userDataService
-              .getItem('collections', chartSrc.collectionsIds[j])
-              .then(collection => {
-                let collSrc: ChartCollSrc_UserData =
-                  <ChartCollSrc_UserData>collection;
-                let newColl: ChartColl = new ChartColl();
-                newColl.importPropsFromSrc_UserData(collSrc);
-                this.chart.collections.push(newColl);
-                this.chartIsReady = (j === collectionsLength - 1);
-              });
-          }
+          this.chart.importPropsFromSrc_UserData(
+            chartSrc, this.userDataService
+          ).then(() => this.chartIsReady = true);
         });
     }
   }

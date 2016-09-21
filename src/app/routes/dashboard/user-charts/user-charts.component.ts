@@ -10,7 +10,7 @@ import { ChartCollSrc_UserData } from "../../../shared/models/ChartCollSrc_UserD
 import { ChartSrc_UserData } from "../../../shared/models/ChartSrc_UserData";
 import { AppRoutingService } from '../../../shared/services/app-routing.service'
 import { DataTableComponent } from "../../../shared/data-table/data-table.component";
-import { HeaderEntry, TableInput } from '../../../shared/models/table-input'
+import { HeaderEntry, TableInput } from '../../../shared/models/table-input-classes'
 import { UserDataService } from '../../../shared/services/user-data.service'
 
 @Component({
@@ -108,21 +108,9 @@ export class UserChartsComponent implements OnDestroy, OnInit {
         let chartsLength: number = src.length;
         for (let i = 0; i < chartsLength; i++) {
           let chart: Chart = new Chart();
-          let chartSrc: ChartSrc_UserData = src[i];
-          chart.importPropsFromSrc_UserData(chartSrc);
-          let collectionsLength: number = chartSrc.collectionsIds.length;
-          for (let j = 0; j < collectionsLength; j++) {
-            this.userDataService
-              .getItem('collections', chartSrc.collectionsIds[j])
-              .then(collection => {
-                let collSrc: ChartCollSrc_UserData =
-                  <ChartCollSrc_UserData>collection;
-                let newColl: ChartColl = new ChartColl();
-                newColl.importPropsFromSrc_UserData(collSrc);
-                chart.collections.push(newColl);
-              });
-          }
           this.charts.push(chart);
+          let chartSrc: ChartSrc_UserData = src[i];
+          chart.importPropsFromSrc_UserData(chartSrc, this.userDataService);
         }
         this.checkMobileAndBuildTableInput();
       }
