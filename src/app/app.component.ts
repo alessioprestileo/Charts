@@ -7,16 +7,12 @@ import { Location }    from '@angular/common';
 import { Subscription }   from 'rxjs/Rx';
 
 import { AppRoutingService } from './shared/services/app-routing.service';
-import { NavButton } from "./shared/models/NavButton";
-import { NavigationComponent } from './shared/navigation/navigation.component';
-import { SiteMapComponent } from './shared/site-map/site-map.component';
 
 @Component({
   moduleId: module.id,
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
-  directives: [NavigationComponent, SiteMapComponent]
 })
 export class AppComponent
 implements AfterViewChecked, DoCheck, OnDestroy, OnInit {
@@ -26,7 +22,6 @@ implements AfterViewChecked, DoCheck, OnDestroy, OnInit {
   }
 
   private currentUrl: string;
-  private navInput: any[];
   private onResizeEmitter: EventEmitter<any> = new EventEmitter();
   private prevBrowserPath: string;
   private siteMapInput: any[];
@@ -48,7 +43,6 @@ implements AfterViewChecked, DoCheck, OnDestroy, OnInit {
         this.currentUrl = url;
         this.setSiteMapInput(url);
       });
-    this.setNavInput();
   }
   ngOnDestroy() {
     // prevent memory leak when component destroyed
@@ -87,9 +81,6 @@ implements AfterViewChecked, DoCheck, OnDestroy, OnInit {
       }
     }
   }
-  public onHomeButtonClicked() : void {
-    this.appRoutingService.navigate(['/' + this.ROUTES_DICT.SAMPLES]);
-  }
   public onSiteMapClick(link: string[]) : void {
     this.appRoutingService.navigate(link);
   }
@@ -107,22 +98,6 @@ implements AfterViewChecked, DoCheck, OnDestroy, OnInit {
                                 footerHeight + 'px';
     routerOutlet = document.getElementById("app-router-outlet");
     routerOutlet.style.height = body.style.height;
-  }
-  private setNavInput() : void {
-    let columnsPerSec: number;
-    let navLevel: number;
-    let navSections: NavButton[];
-    let sectionsPerRow: number;
-    navSections = [
-      new NavButton('Dashboard', ['/' + this.ROUTES_DICT.DASHBOARD]),
-      new NavButton('Samples', ['/' + this.ROUTES_DICT.SAMPLES]),
-      new NavButton('New Chart', ['/' + this.ROUTES_DICT.NEW_CHART]),
-      new NavButton('Lab', ['/' + this.ROUTES_DICT.LAB])
-    ];
-    columnsPerSec = 2;
-    navLevel = 1;
-    sectionsPerRow = 4;
-    this.navInput = [navLevel, navSections, columnsPerSec, sectionsPerRow];
   }
   private setSiteMapInput(currentUrl: string) : void {
     let labels: string[] = [];

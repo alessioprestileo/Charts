@@ -5,8 +5,6 @@ import * as ROUTING_LABELS from './app.routing-labels'
 import { ChartDetailComponent } from './routes/chart-detail/chart-detail.component';
 import { CollectionDetailComponent } from './routes/collection-detail/collection-detail.component';
 import { DashboardComponent } from './routes/dashboard/dashboard.component';
-import { LabComponent } from './routes/lab/lab.component';
-import { NewChartComponent } from './routes/new-chart/new-chart.component';
 import { SamplesComponent } from './routes/samples/samples.component';
 
 export const ROUTES_DICT: {[name: string] : string} = {
@@ -33,18 +31,6 @@ export const APP_ROUTES: Routes = [
   {
     path: ROUTING_LABELS.DASHBOARD,
     component: DashboardComponent,
-  },
-  {
-    path: ROUTING_LABELS.LAB,
-    component: LabComponent,
-  },
-  {
-    path: ROUTING_LABELS.SAMPLES,
-    component: SamplesComponent,
-  },
-  {
-    path: ROUTING_LABELS.NEW_CHART,
-    component: NewChartComponent,
   },
   {
     path: ROUTING_LABELS.CHARTS_DETAIL,
@@ -81,7 +67,11 @@ export const APP_ROUTES: Routes = [
         component: CollectionDetailComponent,
       },
     ]
-  }
+  },
+  {
+    path: ROUTING_LABELS.SAMPLES,
+    component: SamplesComponent,
+  },
 ];
 
 export const ROUTING = RouterModule.forRoot(APP_ROUTES);

@@ -6,11 +6,15 @@ import { SharedModule } from "../../shared.module";
 
 
 @NgModule({
-  imports:      [
-    FormsModule, ReactiveFormsModule,
-    SharedModule ],
-  declarations: [ InputBoxComponent ],
-  exports:      [ InputBoxComponent ],
+  imports: [
+    FormsModule, ReactiveFormsModule, SharedModule
+  ],
+  declarations: [
+    InputBoxComponent
+  ],
+  exports: [
+    InputBoxComponent
+  ],
   providers:    [ ]
 })
 export class InputBoxModule { }

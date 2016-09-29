@@ -1,6 +1,6 @@
 import {Component, DoCheck, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-  REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup
+  FormControl, FormGroup
 } from '@angular/forms';
 
 import {BehaviorSubject, Subscription }   from 'rxjs/Rx';
@@ -10,20 +10,12 @@ import { DataSetBasicHandler } from "./../DataSetBasicHandler";
 import { DataSetFeedback } from "../../../../../models/DataSetFeedback";
 import { BHSrcsDataSetSrc_External } from "../../../../../models/BHSrcsDataSetSrc_External";
 import { ExternalService } from '../../../../../services/external.service';
-import { FromFieldComponent } from "./from-field/from-field.component";
-import { FromIdComponent } from "./from-id/from-id.component";
-import { FromTickerComponent } from "./from-ticker/from-ticker.component";
-import { RadioInputComponent } from "../../../../radio-input/radio-input.component";
 
 @Component({
   moduleId: module.id,
   selector: 'app-from-external',
   templateUrl: 'from-external.component.html',
   styleUrls: ['from-external.component.css'],
-  directives: [
-    FromFieldComponent, FromIdComponent, FromTickerComponent,
-    RadioInputComponent, REACTIVE_FORM_DIRECTIVES
-  ]
 })
 export class FromExternalComponent
 extends DataSetBasicHandler

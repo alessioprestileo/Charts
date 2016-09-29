@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { Location }    from '@angular/common';
 import {
-  REACTIVE_FORM_DIRECTIVES, FormGroup, ValidatorFn
+  FormGroup, ValidatorFn
 } from '@angular/forms';
 
 import {BehaviorSubject, Subscription } from 'rxjs/Rx';
@@ -11,10 +11,7 @@ import {BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { ChartColl } from "../../shared/models/ChartColl";
 import { ChartCollSrc_UserData } from "../../shared/models/ChartCollSrc_UserData";
 import { AppRoutingService } from "../../shared/services/app-routing.service";
-import { CollectionFormComponent } from "../../shared/app-forms/chart-form/collection-form/collection-form.component";
-import { DataSetFormComponent } from "../../shared/app-forms/chart-form/collection-form/dataset-form/dataset-form.component";
 import { formGroupValidator } from '../../shared/app-forms/formGroup.validator';
-import { InputBoxComponent } from "../../shared/app-forms/input-box/input-box.component";
 import { UserDataService } from "../../shared/services/user-data.service";
 
 @Component({
@@ -22,10 +19,6 @@ import { UserDataService } from "../../shared/services/user-data.service";
   selector: 'app-collection-detail',
   templateUrl: 'collection-detail.component.html',
   styleUrls: ['collection-detail.component.css'],
-  directives: [
-    CollectionFormComponent, DataSetFormComponent, InputBoxComponent,
-    REACTIVE_FORM_DIRECTIVES
-  ]
 })
 export class CollectionDetailComponent
 implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
@@ -73,7 +66,7 @@ implements OnDestroy, OnInit, DoCheck, AfterViewChecked {
     this.subFormGroup.unsubscribe();
   }
   private createFormGroup() : void {
-    this.formGroup = new FormGroup({}, null, this.formGroupValidator);
+    this.formGroup = new FormGroup({}, this.formGroupValidator);
     this.subFormGroup = this.formGroup.valueChanges.subscribe(
       () => this.obFormGroupValid.next(this.formGroup.valid)
     );

@@ -43,19 +43,20 @@ export class Chart {
     return service.getAll('collections').then(collections => {
       let collsToAdd: ChartCollSrc_UserData[] =
         <ChartCollSrc_UserData[]>collections.filter(coll => {
-          let result: boolean = false;
-          let ids: number[] = src.collectionsIds;
-          let length: number = ids.length;
-          for (let i = 0; i < length; i++) {
-            if (coll.id === ids[i]) {
-              result = true;
-            }
+        let result: boolean = false;
+        let ids: number[] = src.collectionsIds;
+        let length: number = ids.length;
+        for (let i = 0; i < length; i++) {
+          if (coll.id === ids[i]) {
+            result = true;
           }
-          return result;
-        });
+        }
+        return result;
+      });
       let lengthToAdd: number = collsToAdd.length;
       for (let i = 0; i < lengthToAdd; i++) {
         let coll: ChartColl = new ChartColl();
+        this.collections.push(coll);
         coll.importPropsFromSrc_UserData(collsToAdd[i]);
       }
     });

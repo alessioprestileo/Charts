@@ -1,16 +1,13 @@
 import { Component, DoCheck, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-  REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup, Validators, ValidatorFn
+  FormControl, FormGroup, Validators, ValidatorFn
 } from '@angular/forms';
 
 import {BehaviorSubject, Subscription } from 'rxjs/Rx';
 
 import { Chart } from '../../models/Chart';
 import { ChartColl } from '../../models/ChartColl';
-import { CollectionFormComponent } from './collection-form/collection-form.component';
 import { formGroupValidator } from '../formGroup.validator';
-import { InputBoxComponent } from '../input-box/input-box.component';
-import { ShowChartComponent } from '../../show-chart/show-chart.component';
 
 enum ArrayTypes {
   AppChartCollection,
@@ -38,10 +35,6 @@ class CollectionInput {
   selector: 'app-chart-form',
   templateUrl: 'chart-form.component.html',
   styleUrls: ['chart-form.component.css'],
-  directives: [
-    CollectionFormComponent, InputBoxComponent, REACTIVE_FORM_DIRECTIVES,
-    ShowChartComponent
-  ]
 })
 export class ChartFormComponent implements DoCheck, OnDestroy, OnInit {
   @Input() private chartFormGroup: FormGroup;
@@ -63,7 +56,6 @@ export class ChartFormComponent implements DoCheck, OnDestroy, OnInit {
   private collectionsCount: number = 0;
   private collectionsLabel: string = 'collection';
   private formGroupValidator: ValidatorFn = formGroupValidator;
-  private formTitle: string = 'Enter data for the new chart:';
   private nextCollectionId: number = 0;
   private obChartFormValid: BehaviorSubject<boolean>;
   private obUpdateChartPreview: BehaviorSubject<boolean>;
@@ -159,8 +151,8 @@ export class ChartFormComponent implements DoCheck, OnDestroy, OnInit {
         this.currentChart.collections.push(new ChartColl());
         let length: number = this.currentChart.collections.length;
         collectionInput.collectionObject = this.currentChart.collections[
-          length - 1
-        ];
+        length - 1
+          ];
       }
       else {
         collectionInput.collectionObject = this.currentChart.collections[index];
@@ -178,7 +170,7 @@ export class ChartFormComponent implements DoCheck, OnDestroy, OnInit {
   }
   private collectionFormGroupAdd(key: string) : FormGroup {
     this.chartFormGroup.addControl(
-      key, new FormGroup({}, null, this.formGroupValidator)
+      key, new FormGroup({}, this.formGroupValidator)
     );
     return (<FormGroup>this.chartFormGroup.controls[key]);
   }
@@ -195,12 +187,6 @@ export class ChartFormComponent implements DoCheck, OnDestroy, OnInit {
       this.currentChart.collections, ArrayTypes.AppChartCollection, index
     );
     this.collectionsCount -= 1;
-  }
-  private createObsAndSubs() : void {
-    this.obChartFormValid = new BehaviorSubject(false);
-    this.subChartFormValid = this.chartFormGroup.valueChanges.subscribe(
-      () => this.obChartFormValid.next(this.chartFormGroup.valid)
-    );
   }
   private createControlsSubs() : void {
     this.subNameControl = this.chartFormGroup.controls[
@@ -221,6 +207,12 @@ export class ChartFormComponent implements DoCheck, OnDestroy, OnInit {
           this.currentChart.type = value;
         }
       );
+  }
+  private createObsAndSubs() : void {
+    this.obChartFormValid = new BehaviorSubject(false);
+    this.subChartFormValid = this.chartFormGroup.valueChanges.subscribe(
+      () => this.obChartFormValid.next(this.chartFormGroup.valid)
+    );
   }
   private initializeCollectionInputs() : void {
     let length: number = this.currentChart.collections.length;

@@ -68,14 +68,14 @@ export class ExternalService {
   }
   public getUniquePropertyValues(propKey: string) : Promise<string[]> {
     return this.getDataSetSrcs().then((dataSetSrcs: DataSetSrc_External[]) : string[] => {
-      let uniqueValues: string[] = [];
-      let length: number = dataSetSrcs.length;
-      for (let i = 0; i < length; i++) {
-        if (uniqueValues.indexOf(dataSetSrcs[i][propKey]) === -1) {
-          uniqueValues.push(dataSetSrcs[i][propKey]);
+        let uniqueValues: string[] = [];
+        let length: number = dataSetSrcs.length;
+        for (let i = 0; i < length; i++) {
+          if (uniqueValues.indexOf(dataSetSrcs[i][propKey]) === -1) {
+            uniqueValues.push(dataSetSrcs[i][propKey]);
+          }
         }
-      }
-      return uniqueValues;
+        return uniqueValues;
       }
     );
   }

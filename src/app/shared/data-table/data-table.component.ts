@@ -9,8 +9,6 @@ import { TableInput } from "../models/table-input-classes";
   moduleId: module.id,
   selector: 'app-data-table',
   templateUrl: 'data-table.component.html',
-  directives: [DataTableDirectives],
-  pipes: [DatePipe]
 })
 
 export class DataTableComponent {

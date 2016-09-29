@@ -1,6 +1,6 @@
 import { Component, DoCheck, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import {
-  REACTIVE_FORM_DIRECTIVES, FormControl, FormControlDirective
+  FormControl, FormControlDirective
 } from '@angular/forms';
 
 declare var jQuery: any;
@@ -10,7 +10,6 @@ declare var jQuery: any;
   selector: 'app-input-box',
   templateUrl: 'input-box.component.html',
   styleUrls: ['input-box.component.css'],
-  directives: [REACTIVE_FORM_DIRECTIVES]
 })
 export class InputBoxComponent implements DoCheck, OnInit {
   @Input() private inFormControl: FormControl;
@@ -23,23 +22,23 @@ export class InputBoxComponent implements DoCheck, OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
-
-  ngDoCheck() {
+  ngOnInit() {
     this.setPlaceHolder();
+  }
+  ngDoCheck() {
   }
 
   public hasError(reference: FormControlDirective) : boolean {
     let result : boolean =
       (reference.control && !reference.control.valid &&
-          !reference.control.pristine) ?
+      !reference.control.pristine) ?
         true: false;
     return result;
   }
   public hasSuccess(reference: FormControlDirective) : boolean {
     let result : boolean =
       (reference.control && reference.control.valid &&
-          !reference.control.pristine) ?
+      !reference.control.pristine) ?
         true: false;
     return result;
   }

@@ -5,11 +5,8 @@ import {
 import { Subscription }   from 'rxjs/Rx';
 
 import { Chart } from '../../../shared/models/Chart'
-import { ChartColl } from "../../../shared/models/ChartColl";
-import { ChartCollSrc_UserData } from "../../../shared/models/ChartCollSrc_UserData";
 import { ChartSrc_UserData } from "../../../shared/models/ChartSrc_UserData";
 import { AppRoutingService } from '../../../shared/services/app-routing.service'
-import { DataTableComponent } from "../../../shared/data-table/data-table.component";
 import { HeaderEntry, TableInput } from '../../../shared/models/table-input-classes'
 import { UserDataService } from '../../../shared/services/user-data.service'
 
@@ -18,18 +15,17 @@ import { UserDataService } from '../../../shared/services/user-data.service'
   selector: 'app-user-charts',
   templateUrl: 'user-charts.component.html',
   styleUrls: ['user-charts.component.css'],
-  directives: [DataTableComponent]
 })
 export class UserChartsComponent implements OnDestroy, OnInit {
   @HostListener('window:resize', ['$event'])
   private onResize(event: any) {
-    this.onResizeEmitter.emit();
+    this.emOnResize.emit();
   }
   private collapseTable: boolean = false;
   private charts: Chart[];
   private isMobile: boolean;
   private subOnResize: Subscription;
-  private onResizeEmitter: EventEmitter<any> = new EventEmitter();
+  private emOnResize: EventEmitter<any> = new EventEmitter();
   private tableInput: TableInput;
   private wasMobile: boolean;
 
@@ -41,7 +37,7 @@ export class UserChartsComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.subOnResize = this.onResizeEmitter.subscribe(
+    this.subOnResize = this.emOnResize.subscribe(
       () => this.checkMobileAndBuildTableInput()
     );
     this.setCharts();
